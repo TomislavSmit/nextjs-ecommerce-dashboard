@@ -9,6 +9,7 @@ interface CardItemProps {
     image: string
     deleteButton: ReactNode
     viewButton: ReactNode
+    handleDelete: () => void
 }
 
 export default function CardItem({
@@ -16,6 +17,7 @@ export default function CardItem({
     image,
     deleteButton,
     viewButton,
+    handleDelete,
 }: CardItemProps) {
     return (
         <div className='flex justify-between flex-col border p-4 rounded-lg shadow max-w-[300px]'>
@@ -28,7 +30,9 @@ export default function CardItem({
                 className='w-full h-40 object-contain mb-4'
             />
             <div className='flex justify-between'>
-                <Button>{deleteButton}</Button>
+                <Button onClick={handleDelete} className='cursor-pointer'>
+                    {deleteButton}
+                </Button>
                 <Button>{viewButton}</Button>
             </div>
         </div>
