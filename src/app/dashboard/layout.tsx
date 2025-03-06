@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuth } from '@/context/AuthContext'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -29,15 +30,18 @@ export default function DashboardLayout({
             <div className='flex flex-1'>
                 <aside className='w-64 bg-gray-800 text-white p-4'>
                     <nav>
-                        <a href='/dashboard/categories' className='block py-2'>
+                        <Link
+                            href='/dashboard/categories'
+                            className='block py-2'
+                        >
                             Categories
-                        </a>
-                        <a href='/dashboard/products' className='block py-2'>
+                        </Link>
+                        <Link href='/dashboard/products' className='block py-2'>
                             Products
-                        </a>
-                        <a href='/dashboard/users' className='block py-2'>
+                        </Link>
+                        <Link href='/dashboard/users' className='block py-2'>
                             Users
-                        </a>
+                        </Link>
                     </nav>
                 </aside>
                 <main className='flex-1 p-6 overflow-auto'>{children}</main>
