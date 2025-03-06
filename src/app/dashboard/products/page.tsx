@@ -1,4 +1,4 @@
-import ProductsPage from '@/components/ProductsPage'
+import ProductsPage from '@/components/Products/ProductsPage'
 import { Product } from '@/lib/types/products'
 
 export default async function Products() {
