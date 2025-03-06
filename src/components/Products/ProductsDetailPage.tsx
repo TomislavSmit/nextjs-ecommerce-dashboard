@@ -22,7 +22,7 @@ export default function ProductDetailPage({ product }: { product: Product }) {
                 <Image
                     width={200}
                     height={200}
-                    src={product.image}
+                    src={product.image || ''}
                     alt={product.title}
                     className='w-full h-64 object-contain mb-4'
                 />
