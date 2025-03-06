@@ -1,7 +1,7 @@
 'use client'
 
 import { addProduct, deleteProduct } from '@/lib/api/products'
-import { Product } from '@/lib/types/products'
+import { Product } from '@/types/products'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'

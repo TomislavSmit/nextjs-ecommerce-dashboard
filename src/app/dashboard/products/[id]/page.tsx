@@ -1,6 +1,6 @@
 import ProductDetailPage from '@/components/Products/ProductsDetailPage'
 import { API_URL } from '@/lib/api/config'
-import { Product } from '@/lib/types/products'
+import { Product } from '@/types/products'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 

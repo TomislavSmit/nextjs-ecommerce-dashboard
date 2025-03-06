@@ -1,14 +1,25 @@
-import { Product } from '../types/products'
+import { Product } from '../../types/products'
 
-export const getProducts = async () => {
+export const getProducts = async (): Promise<{
+    data?: Product[]
+    error?: string
+}> => {
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/products`
         )
 
-        return response.json()
+        if (!response.ok) {
+            return { error: 'Failed to fetch products' }
+        }
+
+        const products = await response.json()
+
+        return { data: products }
     } catch (error) {
         console.error('Failed to fetch products', error)
+
+        return { error: 'Failed to fetch products' }
     }
 }
 

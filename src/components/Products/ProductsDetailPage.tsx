@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@/lib/types/products'
+import { Product } from '@/types/products'
 import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
