@@ -7,13 +7,15 @@ export const metadata: Metadata = {
     description: 'Browse all products in the store.',
 }
 
+export const revalidate = 60
+
 export default async function Products() {
     const { data, error } = await getProducts()
 
     if (error) {
         console.error(error)
 
-        return <div>Error fetching products</div>
+        return <div className='text-red-500'>Error fetching products.</div>
     }
 
     return <ProductsPage products={data || []} />
