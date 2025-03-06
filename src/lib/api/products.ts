@@ -23,6 +23,29 @@ export const getProducts = async (): Promise<{
     }
 }
 
+export const getProduct = async (
+    id: number
+): Promise<{
+    data?: Product
+    error?: string
+}> => {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`
+        )
+
+        if (!response.ok) {
+            return { error: 'Failed to fetch product' }
+        }
+
+        const product = await response.json()
+        return { data: product }
+    } catch (error) {
+        console.error('Failed to fetch product', error)
+        return { error: 'Failed to fetch product' }
+    }
+}
+
 export const deleteProduct = async (id: number) => {
     try {
         const response = await fetch(

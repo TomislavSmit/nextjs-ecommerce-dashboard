@@ -1,10 +1,21 @@
 import ProductDetailPage from '@/components/Products/ProductsDetailPage'
-import { API_URL } from '@/lib/api/config'
-import { Product } from '@/types/products'
+import { getProduct, getProducts } from '@/lib/api/products'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 type tParams = Promise<{ id: string }>
+
+export async function generateStaticParams() {
+    const { data, error } = await getProducts()
+
+    if (error || !data) {
+        console.error(error)
+
+        return []
+    }
+
+    return data.map((product) => ({ id: product.id.toString() }))
+}
 
 export async function generateMetadata(props: {
     params: tParams
@@ -17,13 +28,15 @@ export async function generateMetadata(props: {
         }
     }
 
-    const response = await fetch(`${API_URL}/products/${id}`)
+    const { data, error } = await getProduct(Number(id))
 
-    if (!response.ok) {
+    if (error || !data) {
+        console.error(error)
+
         notFound()
     }
 
-    const product = await response.json()
+    const product = data
 
     return {
         title: product.title,
@@ -31,7 +44,7 @@ export async function generateMetadata(props: {
         openGraph: {
             title: product.title,
             description: product.description,
-            images: [product.image],
+            images: [product.image || ''],
         },
     }
 }
@@ -43,13 +56,13 @@ export default async function ProductDetails(props: { params: tParams }) {
         return <div>Product ID not defined</div>
     }
 
-    const response = await fetch(`${API_URL}/products/${id}`)
+    const { data, error } = await getProduct(Number(id))
 
-    if (!response.ok) {
+    if (error || !data) {
+        console.error(error)
+
         notFound()
     }
 
-    const product: Product = await response.json()
-
-    return <ProductDetailPage product={product} />
+    return <ProductDetailPage product={data} />
 }
