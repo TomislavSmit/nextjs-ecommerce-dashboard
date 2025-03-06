@@ -1,5 +1,6 @@
 'use client'
 
+import { loginUser } from '@/lib/api/auth'
 import { useRouter } from 'next/navigation'
 import {
     createContext,
@@ -32,8 +33,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     const login = async (username: string, password: string) => {
-        if (username === 'admin' && password === 'admin') {
-            localStorage.setItem('user', JSON.stringify({ username }))
+        const { data, error } = await loginUser(username, password)
+
+        if (error) {
+            console.error(error)
+
+            return false
+        }
+
+        if (data?.token) {
+            localStorage.setItem(
+                'user',
+                JSON.stringify({ username, token: data.token })
+            )
             setIsAuthenticated(true)
             router.push('/dashboard/categories')
 
