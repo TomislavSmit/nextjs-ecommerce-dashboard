@@ -17,6 +17,11 @@ export default function ProductsPage({ products }: { products: Product[] }) {
     const [description, setDescription] = useState('')
     const [category, setCategory] = useState('')
 
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(
+        null
+    )
+
     const handleAddProduct = async () => {
         const newProduct: Product = {
             id: Date.now(),
@@ -34,13 +39,19 @@ export default function ProductsPage({ products }: { products: Product[] }) {
         setIsModalOpen(false)
     }
 
-    const handleDelete = async (id: number) => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
-            const isDeleted = await deleteProduct(id)
+    const confirmDelete = (id: number) => {
+        setSelectedProductId(id)
+        setIsDeleteModalOpen(true)
+    }
 
-            if (isDeleted) {
-                window.location.reload()
-            }
+    const handleDelete = async () => {
+        if (selectedProductId === null) return
+
+        const isDeleted = await deleteProduct(selectedProductId)
+
+        if (isDeleted) {
+            setIsDeleteModalOpen(false)
+            setSelectedProductId(null)
         }
     }
 
@@ -59,7 +70,7 @@ export default function ProductsPage({ products }: { products: Product[] }) {
                     title={product.title}
                     image={product.image || ''}
                     deleteButton='Delete'
-                    handleDelete={() => handleDelete(product.id)}
+                    handleDelete={() => confirmDelete(product.id)}
                     viewButton={
                         <Link href={`/dashboard/products/${product.id}`}>
                             View
@@ -96,6 +107,25 @@ export default function ProductsPage({ products }: { products: Product[] }) {
                         onChange={(e) => setCategory(e.target.value)}
                     />
                     <Button onClick={handleAddProduct}>Save</Button>
+                </div>
+            </Modal>
+
+            <Modal
+                title='Confirm Deletion'
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+            >
+                <div className='space-y-4'>
+                    <p>Are you sure you want to delete this product?</p>
+                    <div className='flex justify-end gap-2'>
+                        <Button
+                            variant='outline'
+                            onClick={() => setIsDeleteModalOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button onClick={() => handleDelete()}>Delete</Button>
+                    </div>
                 </div>
             </Modal>
         </div>
